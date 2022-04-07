@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+img {
+	width: 100%;
+	height: 100%;
+}
+
+.search-wrap {
+	margin-left: 20px;
+}
+
+.search-wrap>form {
+	display: inline-block;
+}
+
+#search-category {
+	width: 100%;
+	display: inline-block;
+}
+
+#search {
+	margin-left: 5px;
+	width: 200px;
+	display: inline-block;
+}
+
+#btnSearch {
+	margin-left: 5px;
+	width: 35px;
+	height: 34px;
+	background: url("/resources/img/admin/baseline_search_black_18dp.png");
+}
+
+.btnWriteNotice {
+	border: none;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	outline: none;
+	margin-right: 20px;
+	width: 100px;
+	height: 35px;
+	color: #fff;
+	background-color: #f3d479;
+	float: right;
+}

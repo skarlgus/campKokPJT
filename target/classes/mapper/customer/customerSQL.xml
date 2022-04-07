@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="customer">
+	<select id="mypage" parameterType="_int" resultType="u">
+		select
+			user_no as userNo,
+			user_id as userId,
+			user_pw as userPw,
+			user_name as userName,
+			user_phone as userPhone,
+			user_level as userLevel,
+			user_birth as userBirth,
+			user_date as userDate,
+			user_gender as userGender,
+			user_addr as userAddr,
+			user_point as userPoint
+		from user_tbl where user_no=#{parameter}
+	</select>
+	<update id="updateCustomer" parameterType="u">
+		update user_tbl set
+			user_pw=#{userPw},
+			user_phone=#{userPhone},
+			user_addr=#{userAddr}
+		where user_no=#{userNo}	
+	</update>
+	<delete id="deleteCustomer" parameterType="_int">
+		delete from user_tbl where user_no=#{_parameter}
+	</delete>
+	<select id="reserveInfo" parameterType="_int" resultType="r">
+		select 
+			R.res_no as resNo,
+			R.user_no as userNo,
+			R.camp_no as campNo,
+			C.camp_name as campName,
+			R.camp_room as campRoomNo,
+			CR.room_name as campRoomName,
+			C.camp_addr as campAddr,
+			R.res_in_time as resInTime,
+			R.res_out_time as resOutTime,
+			R.res_in_date as resInDate,
+			R.res_out_date as resOutDate,
+			R.res_member as resMember,
+			R.res_price as resPrice,
+			R.res_memo as resMemo,
+			R.res_count as resCount
+		from reservation R inner join camp C on R.camp_no=C.camp_no
+				inner join camproom CR on R.camp_room=CR.room_no
+		 where user_no=#{parameter} and res_out_date >= to_char(sysdate,'yyyy-mm-dd')
+	</select>
+	<select id="useInfo" parameterType="map" resultType="r">
+		select * from 
+		(select rownum as rnum, n. * from 
+			(select 
+				R.res_no as resNo,
+				R.user_no as userNo,
+				R.camp_no as campNo,
+				C.camp_name as campName,
+				R.camp_room as campRoomNo,
+				CR.room_name as campRoomName,
+				C.camp_addr as campAddr,
+				R.res_in_time as resInTime,
+				R.res_out_time as resOutTime,
+				R.res_in_date as resInDate,
+				R.res_out_date as resOutDate,
+				R.res_member as resMember,
+				R.res_price as resPrice,
+				R.res_memo as resMemo,
+				R.res_count as resCount
+			from reservation R inner join camp C on R.camp_no=C.camp_no
+					inner join camproom CR on R.camp_room=CR.room_no 
+			where R.user_no=#{userNo}
+			order by 1 desc)
+		n)
+		where rnum between #{start} and #{end}
+	</select>
+	<select id="totalUse" parameterType="_int" resultType="r">
+		select 
+				R.res_no as resNo,
+				R.user_no as userNo,
+				R.camp_no as campNo,
+				C.camp_name as campName,
+				R.camp_room as campRoomNo,
+				CR.room_name as campRoomName,
+				C.camp_addr as campAddr,
+				R.res_in_time as resInTime,
+				R.res_out_time as resOutTime,
+				R.res_in_date as resInDate,
+				R.res_out_date as resOutDate,
+				R.res_member as resMember,
+				R.res_price as resPrice,
+				R.res_memo as resMemo,
+				R.res_count as resCount
+			from reservation R inner join camp C on R.camp_no=C.camp_no
+					inner join camproom CR on R.camp_room=CR.room_no
+		where user_no=#{parameter}
+	</select>
+	<select id="reviewInfo" parameterType="map" resultType="rv">
+		select * from 
+		(select rownum as rnum, n. * from(select
+					R.rev_no as revNo,
+					R.user_id as userId,
+					R.camp_no as campNo,
+					C.camp_name as campName,
+					R.rev_contents as revContents,
+					R.rev_star as revStar,
+					R.rev_date as revDate,
+					R.rev_image as revImage,
+					R.rev_heart as revHeard
+				from review R inner join camp C on R.camp_no=C.camp_no
+				where user_id=#{userId} order by 1 desc)n)
+		 where rnum between #{start} and #{end}
+	</select>
+	<select id="totalReview" parameterType="string" resultType="rv">
+		select
+			R.rev_no as revNo,
+			R.user_id as userId,
+			R.camp_no as campNo,
+			C.camp_name as campName,
+			R.rev_contents as revContents,
+			R.rev_star as revStar,
+			R.rev_date as revDate,
+			R.rev_image as revImage,
+			R.rev_heart as revHeard
+		from review R inner join camp C on R.camp_no=C.camp_no
+		where user_id=#{parameter}
+	</select>
+	<select id="pointInfo" parameterType="_int" resultType="p">
+		select 
+			point_no as pointNo,
+			user_no as userNo,
+			point_save_contents as pointSaveContents,
+			point_save_date as pointSaveDate,
+			point_save as pointSave,
+			point_total as pointTotal,
+			point_use as pointUse,
+			point_use_contents as pointUseContents,
+			point_use_date as pointUseDate
+		from point where user_no=#{parameter}
+	</select>
+	<select id="boardList" parameterType="map" resultType="b">
+		select 
+			rownum as rnum,
+			board_no as boardNo,
+			user_id as userId,
+			board_filename as boardFilename,
+			board_filepath as boardFilepath,
+			board_contents as boardContents,
+			board_date as boardDate,
+			board_title as boardTitle
+		from (select rownum as rnum, n. * from (select * from board order by 1 desc)n) 
+	 	where rnum between #{start} and #{end}
+	</select>
+	<select id="totalBoard" resultType="b">
+		select
+			board_no as boardNo,
+			user_id as userId,
+			board_filename as boardFilename,
+			board_filepath as boardFilepath,
+			board_contents as boardContents,
+			board_date as boardDate,
+			board_title as boardTitle
+		from board
+	</select>
+	<select id="boardView" parameterType="_int" resultType="b">
+		select
+			board_no as boardNo,
+			user_id as userId,
+			board_filename as boardFilename,
+			board_filepath as boardFilepath,
+			board_contents as boardContents,
+			board_date as boardDate,
+			board_title as boardTitle
+		from board where board_no=#{parameter}
+	</select>
+	<select id="boardCommentList" parameterType="_int" resultType="bc">
+		select
+			board_comment_no as boardCommentNo,
+			board_comment_writer as boardCommentWriter,
+			board_comment_content as boardCommentContent,
+			board_ref as boardRef,
+			board_comment_date as boardCommentDate
+		from board_comment where board_ref=#{parameter}
+			
+	</select>
+	<insert id="boardInsert" parameterType="b">
+		insert into board values(board_seq.nextval,#{userId},#{boardFilename},#{boardFilepath},#{boardContents},to_char(sysdate, 'yyyy-mm-dd'),#{boardTitle})
+	</insert>
+	
+	<delete id="boardDelete" parameterType="_int">
+		delete from board where board_no=#{_parameter}
+	</delete>
+	<update id="boardUpdate" parameterType="b">
+		update board set
+			board_filename=#{boardFilename},
+			board_filepath= #{boardFilepath},
+			board_contents= #{boardContents},
+			board_title= #{boardTitle}
+		where board_no=#{boardNo}
+	</update>
+	<insert id="boardCommentInsert" parameterType="bc">
+		insert into board_comment values(board_comment_seq.nextval,#{boardCommentWriter},#{boardCommentContent},#{boardRef},to_char(sysdate,'yyyy-mm-dd'))
+	</insert>
+	<update id="boardCommentUpdate" parameterType="bc">
+		update board_comment set
+			board_comment_content=#{boardCommentContent}
+		where board_comment_no=#{boardCommentNo}
+	</update>
+	<delete id="boardCommentDelete" parameterType="_int">
+		delete from board_comment where board_comment_no=#{_parameter}
+	</delete>
+	<select id="searchList" parameterType="map" resultType="b">
+		select 
+			rownum as rnum,
+			board_no as boardNo,
+			user_id as userId,
+			board_filename as boardFilename,
+			board_filepath as boardFilepath,
+			board_contents as boardContents,
+			board_date as boardDate,
+			board_title as boardTitle
+		from (select rownum as rnum, n.* from (select * from board order by 1 desc)n) 
+	 	where rnum between #{start} and #{end} and board_title like ('%'||#{keyword}||'%') 
+	</select>
+	<select id="searchBoard" parameterType="string" resultType="b">
+		select
+			board_no as boardNo,
+			user_id as userId,
+			board_filename as boardFilename,
+			board_filepath as boardFilepath,
+			board_contents as boardContents,
+			board_date as boardDate,
+			board_title as boardTitle
+		from board where board_title like ('%'||#{parameter}||'%')
+	</select>
+	
+	<select id="dmList" parameterType="string" resultType="d">
+		select
+			dm_no as dmNo,
+			dm_sender as dmSender,
+			dm_receiver as dmReceiver,
+			dm_contents as dmContents,
+			dm_date as dmDate,
+			dm_check as dmCheck
+		from dm where dm_sender=#{parameter} or dm_receiver=#{parameter} order by 1 desc
+	</select>
+	<insert id="inserDM" parameterType="d">
+		insert into dm values(dm_seq.nextval, #{dmSender}, #{dmReceiver}, #{dmContents}, to_char(sysdate, 'yyyy-mm-dd'), '읽지않음')
+	</insert>
+	<delete id="deleteDm" parameterType="_int">
+		delete from dm where dm_no=#{_parameter}
+	</delete>
+	<select id="selectDm" parameterType="_int" resultType="d">
+		select
+			dm_no as dmNo,
+			dm_sender as dmSender,
+			dm_receiver as dmReceiver,
+			dm_contents as dmContents,
+			dm_date as dmDate,
+			dm_check as dmCheck
+		from dm where dm_no=#{_parameter}
+	</select>
+	<update id="updateDm" parameterType="_int">
+		update dm set dm_check='읽음' where dm_no=#{_parameter}
+	</update>
+</mapper>

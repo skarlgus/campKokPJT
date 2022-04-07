@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adminCamp">
+	<!-- ******************** CampEnvInfo ******************** -->
+	<select id="selectCampEnvInfo" parameterType="_int" resultType="campEnv">
+		SELECT
+		env_no AS envNo,
+		camp_no AS campNo,
+		env_name AS envName,
+		env_addr AS
+		envAddr,
+		env_tel AS envTel,
+		env_filename AS envFileName,
+		env_filepath AS envFilePath
+		FROM campenv WHERE camp_no = #{_parameter}
+	</select>
+
+	<!-- ******************** CampFiles ******************** -->
+	<select id="selectCampFiles" parameterType="_int" resultType="campFile">
+		SELECT
+		file_no AS fileNo,
+		camp_no AS campNo,
+		camp_filename AS campFileName,
+		camp_filepath AS campFilePath
+		FROM file_tbl WHERE camp_no = #{_parameter}
+	</select>
+
+	<!-- ******************** CampInfo ******************** -->
+	<select id="getTotalCampCount" resultType="_int">
+		SELECT count(*) FROM camp
+	</select>
+
+	<select id="getSearchCampInfoCount" parameterType="HashMap" resultType="_int">
+		SELECT count(*)
+		<choose>
+			<when test="searchCategory.equals('ceoName')">
+				FROM camp, user_tbl WHERE camp.ceo_id = user_tbl.user_id AND user_tbl.user_name LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('ceoId')">
+				FROM camp WHERE ceo_id LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('campName')">
+				FROM camp WHERE camp_name LIKE '%'||#{search}||'%'
+			</when>
+		</choose>
+	</select>
+
+	<select id="getCampInfo" parameterType="_int" resultType="camp">
+		SELECT
+		camp_no AS campNo,
+		ceo_id AS ceoId,
+		camp_addr AS campAddr,
+		camp_name AS
+		campName,
+		camp_site AS campSite,
+		camp_tel AS campTel,
+		camp_theme AS campTheme,
+		camp_fac AS campFac,
+		camp_Ctg AS campCtg
+		FROM camp WHERE camp_no = #{_parameter}
+	</select>
+
+	<select id="selectCampInfo" parameterType="string" resultType="camp">
+		SELECT
+		camp_no AS campNo,
+		ceo_id AS ceoId,
+		camp_addr AS campAddr,
+		camp_name AS
+		campName,
+		camp_site AS campSite,
+		camp_tel AS campTel,
+		camp_theme AS campTheme,
+		camp_fac AS campFac,
+		camp_Ctg AS campCtg
+		FROM camp WHERE ceo_id =
+		#{_parameter}
+	</select>
+
+	<select id="selectCampInfoList" parameterType="HashMap" resultType="camp">
+		SELECT * FROM (SELECT ROWNUM AS rNum, c.* FROM (
+		SELECT
+		camp_no AS campNo,
+		ceo_id AS ceoId,
+		camp_addr AS campAddr,
+		camp_name AS campName,
+		camp_site AS campSite,
+		camp_tel AS campTel,
+		camp_theme AS campTheme,
+		camp_fac AS campFac,
+		camp_ctg AS campCtg
+		FROM camp ORDER BY 1 DESC
+		)c)
+		WHERE rNum BETWEEN #{start} AND #{end}
+	</select>
+
+	<select id="searchCampInfoList" parameterType="HashMap" resultType="camp">
+		SELECT * FROM (SELECT ROWNUM AS rNum, c.* FROM (
+		SELECT
+		camp_no AS campNo,
+		ceo_id AS ceoId,
+		camp_addr AS campAddr,
+		camp_name AS campName,
+		camp_site AS
+		campSite,
+		camp_tel AS campTel,
+		camp_theme AS campTheme,
+		camp_fac AS campFac,
+		camp_ctg AS campCtg
+		<choose>
+			<when test="searchCategory.equals('ceoName')">
+				FROM camp, user_tbl WHERE camp.ceo_id = user_tbl.user_id AND user_tbl.user_name LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('ceoId')">
+				FROM camp WHERE ceo_id LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('campName')">
+				FROM camp WHERE camp_name LIKE '%'||#{search}||'%'
+			</when>
+		</choose>
+		)c)
+		WHERE rNum BETWEEN ${start} AND ${end}
+	</select>
+
+	<insert id="insertCampInfo" parameterType="camp">
+		INSERT INTO camp VALUES (
+		camp_seq.NEXTVAL,
+		#{ceoId},
+		#{campAddr},
+		#{campName},
+		#{campSite},
+		#{campTel},
+		#{campTheme},
+		#{campFac},
+		#{campCtg}
+		)
+	</insert>
+
+	<insert id="insertCampFile" parameterType="campFile">
+		INSERT INTO file_tbl VALUES (
+		file_tbl_seq.NEXTVAL,
+		#{campNo},
+		#{campFileName},
+		#{campFilePath}
+		)
+	</insert>
+
+	<insert id="insertCampEnv" parameterType="campEnv">
+		INSERT INTO campenv VALUES(
+		campenv_seq.NEXTVAL,
+		#{campNo},
+		#{envName},
+		#{envAddr},
+		#{envTel},
+		#{envFileName},
+		#{envFilePath}
+		)
+	</insert>
+
+	<delete id="deleteCampInfo" parameterType="_int">
+		DELETE FROM camp WHERE camp_no = #{_parameter}
+	</delete>
+</mapper>

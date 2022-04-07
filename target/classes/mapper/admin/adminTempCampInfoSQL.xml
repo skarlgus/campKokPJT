@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="tempCampInfo">
+	<select id="getTempCampCount" resultType="_int">
+		SELECT count(*) FROM temp_camp
+	</select>
+
+	<select id="getSearchTempCampCount" parameterType="HashMap" resultType="_int">
+		SELECT count(*)
+		<choose>
+			<when test="searchCategory.equals('ceoName')">
+				FROM temp_camp, user_tbl WHERE temp_camp.ceo_id = user_tbl.user_id AND user_tbl.user_name LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('ceoId')">
+				FROM temp_camp WHERE ceo_id LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('campName')">
+				FROM temp_camp WHERE camp_name LIKE '%'||#{search}||'%'
+			</when>
+		</choose>
+	</select>
+
+	<!-- ********** Temp Camp Env ********** -->
+	<select id="selectTempCampEnvInfo" parameterType="_int" resultType="campEnv">
+		SELECT
+		env_no AS envNo,
+		camp_no AS campNo,
+		env_name AS envName,
+		env_addr AS
+		envAddr,
+		env_tel AS envTel,
+		env_filename AS envFileName,
+		env_filepath AS envFilePath
+		FROM temp_camp_env WHERE camp_no = #{_parameter}
+	</select>
+
+	<!-- ********** Temp Camp Files ********** -->
+	<select id="selectTempCampFiles" parameterType="_int" resultType="campFile">
+		SELECT
+		file_no AS fileNo,
+		camp_no AS campNo,
+		camp_filename AS campFileName,
+		camp_filepath AS campFilePath
+		FROM temp_file_tbl WHERE camp_no = #{_parameter}
+	</select>
+
+	<select id="getTempCampInfoCount" resultType="_int">
+		SELECT count(*) FROM temp_camp
+	</select>
+
+	<select id="selectTempCamp" parameterType="_int" resultType="camp">
+		SELECT
+		camp_no AS campNo,
+		ceo_id AS ceoId,
+		camp_name AS campName,
+		camp_addr AS
+		campAddr,
+		camp_site AS campSite,
+		camp_tel AS campTel,
+		camp_theme AS campTheme,
+		camp_fac AS campFac,
+		camp_ctg AS campCtg
+		FROM temp_camp
+		WHERE camp_no =
+		#{_parameter}
+	</select>
+
+	<select id="selectTempCampList" parameterType="HashMap" resultType="camp">
+		SELECT * FROM (SELECT ROWNUM as rNum, tc.* FROM (SELECT
+		camp_no AS campNo,
+		ceo_id AS ceoId,
+		camp_name AS campName,
+		camp_addr AS campAddr,
+		camp_site AS campSite,
+		camp_tel AS campTel,
+		camp_theme AS campTheme,
+		camp_fac AS campFac,
+		camp_ctg AS campCtg
+		FROM
+		temp_camp ORDER BY 1 DESC
+		)tc)
+		WHERE rNum BETWEEN #{start} AND #{end}
+	</select>
+
+	<select id="searchTempCampInfoList" parameterType="HashMap" resultType="camp">
+		SELECT * FROM (SELECT ROWNUM AS rNum, tc.* FROM (
+		SELECT
+		camp_no AS campNo,
+		ceo_id AS ceoId,
+		camp_addr AS campAddr,
+		camp_name AS campName,
+		camp_site AS
+		campSite,
+		camp_tel AS campTel,
+		camp_theme AS campTheme,
+		camp_fac AS campFac,
+		camp_ctg AS campCtg
+		<choose>
+			<when test="searchCategory.equals('ceoName')">
+				FROM temp_camp, user_tbl WHERE temp_camp.ceo_id = user_tbl.user_id AND user_tbl.user_name LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('ceoId')">
+				FROM temp_camp WHERE ceo_id LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('campName')">
+				FROM temp_camp WHERE camp_name LIKE '%'||#{search}||'%'
+			</when>
+		</choose>
+		)tc)
+		WHERE rNum BETWEEN ${start} AND ${end}
+	</select>
+
+	<delete id="deleteTempCampInfo" parameterType="_int">
+		DELETE FROM temp_camp WHERE camp_no = #{_parameter}
+	</delete>
+</mapper>

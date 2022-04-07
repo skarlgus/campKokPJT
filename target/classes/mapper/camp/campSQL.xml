@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="camp">
+
+    <select id="selectAllNotice" parameterType="map" resultType="cn">
+  		select * from (select rownum as rnum, n.*from(select * from camp_notice order by 1 desc)n) where rnum between #{start} and #{end}
+    </select>
+  
+    <select id="selectCountNoitce" resultType="_int">
+  		select count(*) from camp_notice
+    </select>
+
+	<select id="selectRoomInfo" parameterType="_int" resultType="cr">
+		select 
+			room_no as roomNo,
+			camp_no as campNo,
+			room_member as roomMember,
+			room_name as roomName,
+			room_price roomPrice
+		from camproom where room_no=#{_parameter}
+	</select>
+	
+	<select id="selectCampInfo" parameterType="_int" resultType="c">
+		select
+			camp_no as campNo,
+			ceo_id as ceoId,
+			camp_addr as campAddr,
+			camp_name as campName,
+			camp_site as campSite,
+			camp_tel as campTel,
+			camp_theme as campTheme, 
+			camp_fac as campFac,
+			camp_ctg as campCtg
+		from camp where camp_no=#{_parameter}
+	</select>
+	
+	<insert id="campRes" parameterType="map">
+		insert into reservation values(reservation_seq.nextval,#{userNo},#{campNo},#{campRoomNo},#{resInTime},#{resOutTime},#{resInDate},#{resOutDate},#{resMember},#{resPrice},#{resMemo},1)                              
+	</insert>
+	
+	<select id="selectUserPoint" parameterType="_int" resultType="cu">
+		select 
+			user_no as userNo,
+			user_name as userName,
+			user_point as userPoint,
+			user_level as userLevel,
+			user_id as userId
+		from user_tbl where user_no=#{_parameter}
+	</select>
+	
+	<update id="updateUserPoint" parameterType="map">
+		update user_tbl set
+			user_point = (user_point-#{userUsePoint})
+		where user_no = #{userNo}
+	</update>
+	
+	<select id="totalPoint" parameterType="_int" resultType="_int">
+		select user_point from user_tbl where user_no=#{_parameter}
+	</select>
+	
+	<insert id="insertPoint" parameterType="map">
+		insert into point values(point_seq.nextval,#{userNo},null,null,null,#{totalPoint},#{userUsePoint},'예약 시 포인트 사용',to_char(sysdate,'yyyy-mm-dd'))
+	</insert>
+	
+	<insert id="insertComment" parameterType="map">
+		insert into review values(review_seq.nextval,#{userId},#{campNo},#{revContents},1,to_char(sysdate,'yyyy-mm-dd'),null,0)
+	</insert>
+	
+	<select id="selectAllComment" parameterType="_int" resultType="rvo">
+	SELECT A.* FROM (
+	SELECT rev_no as revNo, 
+			user_id as userId, 
+			camp_no as campNo, 
+			rev_contents as revContents,
+			rev_star as revStar,
+			rev_date as revDate, 
+			rev_image as revImage, 
+			rev_heart as revHeart FROM review where camp_no=#{_parameter} ORDER BY rev_no desc) A
+	</select>
+	
+	<select id="getCampNoticeCount" resultType="_int">
+		SELECT count(*) FROM camp_notice
+	</select>
+	
+	<select id="selectCampNoticeList" parameterType="map" resultType="cnv">
+		SELECT * FROM (SELECT ROWNUM as rNum, n.* FROM (
+			SELECT
+			camp_notice_no AS campNoticeNo,
+			camp_no AS campNo,
+			camp_notice_title AS campNoticeTitle,
+			camp_notice_contents AS campNoticeContents,
+			camp_notice_date AS campNoticeDate,
+			camp_notice_filename AS campNoticeFileName,
+			camp_notice_filepath AS campNoticeFilePath
+			FROM camp_notice ORDER BY 1 DESC
+			)n)
+		WHERE rNum BETWEEN
+		#{start} AND #{end}
+	</select>
+	
+	<select id="selectCampNotice" parameterType="_int" resultType="cnv">
+		SELECT 
+			camp_notice_no AS campNoticeNo,
+			camp_no AS campNo,
+			camp_notice_title AS campNoticeTitle,
+			camp_notice_contents AS campNoticeContents,
+			camp_notice_date AS campNoticeDate,
+			camp_notice_filename AS campNoticeFileName,
+			camp_notice_filepath AS campNoticeFilePath
+		FROM camp_notice where camp_notice_no=#{_parameter}
+	</select>
+	
+	<select id="selectCampResList" parameterType="_int" resultType="campResVO">
+		select 
+			res_no as resNo,
+			user_no as userNo,
+			camp_no as campNo,
+			camp_room as campRoom,
+			res_in_date as resInDate,
+			res_out_date as resOutDate,
+			res_in_time as resInTime,
+			res_out_time as resOutTime,
+			res_member as resMember,
+			res_price as resPrice,
+			res_memo as resMemo,
+			res_count as resCount
+		from reservation where camp_room=#{_parameter}
+	</select>
+	
+	<delete id="commentDelete" parameterType="_int">
+		delete review where rev_no=#{_parameter}
+	</delete>
+	
+	<update id="commentUpdate" parameterType="_int">
+	update user_tbl set
+			user_point = (user_point-#{userUsePoint})
+		where user_no = #{userNo}
+		update rev_contents set  
+	</update>
+	<select id="selectOneUser" parameterType="u" resultType="u">
+		select
+			user_no as userNo,
+			user_id as userId,
+			user_pw as userPw,
+			user_name as userName,
+			user_phone as userPhone,
+			user_level as userLevel,
+			user_birth as userBirth,
+			user_date as userDate,
+			user_gender as userGender,
+			user_addr as userAddr,
+			user_point as userPoint
+		from user_tbl where user_id=#{userId} and user_pw=#{userPw}
+	</select>
+	<select id="selectUser" parameterType="string" resultType="cu">
+		select 
+			user_no as userNo,
+			user_name as userName,
+			user_point as userPoint,
+			user_level as userLevel,
+			user_id as userId
+		from user_tbl where user_id=#{_parameter}
+	</select>
+	<select id="insertCampSeq" resultType="_int">
+		SELECT temp_camp_seq.nextval from DUAL
+	</select>
+	
+	<insert id="insertCampVO" parameterType="c">
+		insert into temp_camp values(
+			#{campNo},
+	  		#{ceoId},
+	  		#{campAddr},
+	  		#{campName},
+	  		#{campSite},
+	  		#{campTel},
+	  		#{campTheme},
+	  		#{campFac},
+	  		#{campCtg}
+		)
+	</insert>
+	<select id="selectOneCamp" parameterType="c" resultType="c">
+		select
+			camp_no as campNo,
+			ceo_id as ceoId,
+			camp_addr as campAddr,
+			camp_name as campName,
+			camp_site as campSite,
+			camp_tel as campTel,
+			camp_theme as campTheme,
+			camp_fac as campFac,
+			camp_ctg as campCtg
+		from camp where ceo_id=#{userId}
+	</select>
+	<insert id="insertCampEnv" parameterType="ce">
+		insert into temp_camp_env values(
+			temp_camp_env_seq.nextval,
+			#{campNo},
+			#{envName},
+			#{envAddr},
+			#{envTel},
+			#{envFilename},
+			#{envFilepath}
+		)
+	</insert>
+	<insert id="insertRent" parameterType="rent">
+		insert into rent values(
+			rent_seq.nextval,
+			#{campNo},
+			#{rentName},
+			#{rentFilename},
+			#{rentFilepath},
+			#{rentPrice},
+			#{rentContents}
+		)
+	</insert>
+	<insert id="insertFileTBL" parameterType="ft">
+		insert into temp_file_tbl values(
+			temp_camp_env_seq.nextval,
+			#{campNo},
+			#{campFileName},
+			#{campFilePath}
+		)
+	</insert>
+	
+	<insert id="insertPointReview" parameterType="map">
+		insert into point values(point_seq.nextval,#{userNo},'리뷰작성 포인트 적립',to_char(sysdate,'yyyy-mm-dd'),500,#{pointTotal},null,null,null)
+	</insert>
+	
+	<update id="updateUserPoint2" parameterType="_int">
+		update user_tbl set
+			user_point = (user_point+500)
+		where user_no = #{userNo}
+	</update>
+	
+	
+	
+	
+	
+  
+</mapper>

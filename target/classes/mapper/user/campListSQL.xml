@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="camplist">
+   
+   <!-- 캠프 리스트 -->
+  <select id="selectAllCampList" parameterType="map" resultType="camplist">
+  	select * from (select rownum as rnum, c.* from (
+	   	select 
+		    camp.camp_no as campNo,
+		    camp_name as campName,
+		    camp_addr as campAddr,
+		    camp_site as campSite,
+		    camp_tel as campTel,
+		    camp_theme as campTheme,
+		    camp_fac as campFac,
+		    camp_ctg as campCtg,
+		    campenv.env_name as campEnv,
+		    (select min(room_price) from camproom where camp_no = camp.camp_no) as campMinPrice,
+		    (select round(avg(rev_star),1) from review where camp_no = camp.camp_no) as campStar,
+		    (select camp_filepath from file_tbl where file_no = (select min(file_no) from file_tbl where camp_no = camp.camp_no)) as imgpath
+		from camp full join campenv on (camp.camp_no = campenv.camp_no)
+	)c)
+	where rnum between ${start} and ${end}
+  </select>
+   
+   <!-- 캠핑장 수 -->
+  <select id="totalCount" resultType="_int">
+  		select count(*) from camp
+  </select>
+  
+  <!-- 캠핑장 이미지 -->
+  <select id="selectCampFiles" parameterType="_int" resultType="campFile">
+  	select
+		file_no as fileNo,
+		camp_no as campNo,
+		camp_filename as campFileName,
+		camp_filepath as campFilePath
+	from file_tbl where camp_no = #{_parameter}
+	</select>
+  
+  <!-- 캠핑장 상세보기 -->
+  <select id="selectOneCamp" parameterType="_int" resultType="camplist">
+  	select
+  		camp_no as campNo,
+  		ceo_id as ceoId,
+  		camp_addr as campAddr,
+  		camp_name as campName,
+  		camp_site as campSite,
+  		camp_tel as campTel,
+  		camp_theme as campTheme,
+  		camp_fac as campFac,
+  		camp_ctg as campCtg,
+  		(select round(avg(rev_star),1) from review where camp_no = camp.camp_no) as campStar
+  	from camp where camp_no = #{campNo}
+  </select>
+  
+  <!-- 검색 된 캠핑장 총 개수 -->
+  <select id="totalSearchCampList" parameterType="HashMap" resultType="_int">
+		select count(*)
+		<choose>
+			<when test="searchSelect.equals('campName')">
+				from camp where camp_name like '%'||#{keyword}||'%'
+			</when>
+			<when test="searchSelect.equals('campAddr')">
+				from camp where camp_addr like '%'||#{keyword}||'%'
+			</when>
+		</choose>
+	</select>
+  
+  <!-- 캠핑장 검색 -->
+  <select id="searchCampList" parameterType="map" resultType="camplist">
+  	select * from (select rownum as rnum, c.* from (
+		select 
+	    camp.camp_no as campNo,
+	    camp_name as campName,
+	    camp_addr as campAddr,
+	    camp_site as campSite,
+	    camp_tel as campTel,
+	    camp_theme as campTheme,
+	    camp_fac as campFac,
+	    camp_ctg as campCtg,
+	    campenv.env_name as campEnv,
+	    (select min(room_price) from camproom where camp_no = camp.camp_no) as campMinPrice,
+	    (select round(avg(rev_star),1) from review where camp_no = camp.camp_no) as campStar,
+	    (select camp_filepath from file_tbl where file_no = (select min(file_no) from file_tbl where camp_no = camp.camp_no)) as imgpath
+	from camp full join campenv on (camp.camp_no = campenv.camp_no) where 
+		<choose>
+			<when test="searchSelect.equals('campName')">
+				camp_name like '%'||#{keyword}||'%'
+			</when>
+			<when test="searchSelect.equals('campAddr')">
+				camp_addr like '%'||#{keyword}||'%'
+			</when>
+		</choose>
+	)c)
+	where rnum between ${start} and ${end}
+  </select>  
+  
+  <!-- 메인 캠핑장 광고 리스트 --> 
+  <!-- <select id="">
+  	select
+  </select> -->
+  
+  <!-- 메인 새로운 캠핑장 리스트 -->
+  <select id="mainNewCampList" resultType="camplist">
+  	select 
+	    camp.camp_no as campNo,
+	    camp_name as campName,
+	    camp_addr as campAddr,
+	    camp_site as campSite,
+	    camp_tel as campTel,
+	    camp_theme as campTheme,
+	    camp_fac as campFac,
+	    camp_ctg as campCtg,
+	    campenv.env_name as campEnv,
+	    (select min(room_price) from camproom where camp_no = camp.camp_no) as campMinPrice,
+	    (select round(avg(rev_star),1) from review where camp_no = camp.camp_no) as campStar,
+	    (select camp_filepath from file_tbl where file_no = (select min(file_no) from file_tbl where camp_no = camp.camp_no)) as imgpath
+	from camp full join campenv on (camp.camp_no = campenv.camp_no) order by camp.camp_no desc
+  </select>
+  
+  <!-- 메인 캠핑장 예약 랭킹 -->
+  <select id="mainCampRanking" resultType="camplist">
+  	select 
+	    camp.camp_no as campNo,
+	    camp_addr as campAddr,
+	    camp_name as campName,
+	    camp_site as campSite,
+	    camp_tel as campTel,
+	    camp_theme as campTheme,
+	    camp_fac as campFac,
+	    campenv.env_name as campEnv,
+	    (select min(room_price) from camproom where camp_no = camp.camp_no) as campMinPrice,
+	    (select round(avg(rev_star),1) from review where camp_no = camp.camp_no) as campStar,
+	    (select sum(res_count) from reservation where camp_no = camp.camp_no) as resCount,
+	    (select camp_filepath from file_tbl where file_no = (select min(file_no) from file_tbl where camp_no = camp.camp_no)) as imgpath
+	from camp full join campenv 
+	on (camp.camp_no = campenv.camp_no) order by resCount
+  </select>
+  
+  <!-- 캠핑장 상세페이지 공지 리스트 -->
+  <select id="selectCampNoticeList" resultType="cn">
+  	select
+  		camp_notice_no as campNoticeNo,
+		camp_no as campNo,
+		camp_notice_title as campNoticeTitle,
+		camp_notice_contents as campNoticeContents,
+		camp_notice_filepath as campNoticefilePath,
+		camp_notice_filename as campNoticeFilename,
+		camp_notice_date as campNoticeDate
+	from camp_notice where camp_no=#{campNo} order by camp_notice_no desc
+  </select>
+  
+  <!-- 캠핑장 상세페이지 리뷰 리스트 -->
+  <select id="selectCampReviewList" resultType="rvo">
+  	select
+  		rev_no as revNo,
+		user_id as userId,
+		camp_no as campNo,
+		rev_contents as revContents,
+		rev_star as revStar,
+		rev_date as revDate,
+		rev_image as revImage,
+		rev_heart as revHeart
+  	from review where camp_no=#{campNo} order by rev_no desc
+  </select>
+  
+  <select id="selectCampRoomList" parameterType="_int" resultType="campRoomList">
+  	select
+  		room_no as roomNo,
+  		camp_no as campNo,
+  		room_member as roomMember,
+  		room_name as roomName,
+  		room_price as roomPrice
+  	from camproom where camp_no=#{_parameter}
+  </select>
+</mapper>

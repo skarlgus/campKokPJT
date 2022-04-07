@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mainFaq">
+	<select id="TotalFAQCount" resultType="_int">
+		select count(*) from faq
+	</select>
+	
+	<select id="selectFAQList" parameterType="HashMap" resultType="mainFaq">
+		select * from 
+			(select rownum as rNum, f.* from (
+				select
+				faq_no as faqNo,
+				user_id as userId,
+				faq_user as faqUser,
+				faq_title as faqTitle,
+				faq_contents as faqContents,
+				faq_date as faqDate
+			from faq order by 1 desc
+			)f) 
+		<!-- where faqUser='${faqUser}' and rNum between ${start} and ${end}  -->
+		where faqUser=#{faqUser} and rNum between #{start} and #{end} 
+	</select>
+	
+	<select id="selectOneFAQ" parameterType="_int" resultType="mainFaq">
+		select
+			faq_no as faqNo,
+			user_id as userId,
+			faq_user as faqUser,
+			faq_title as faqTitle,
+			faq_contents as faqContents,
+			faq_date as faqDate
+		from faq where faq_no = #{_parameter}
+	</select>
+	
+	<select id="totalSearchFAQCount" resultType="_int">
+		select count(*) from faq 
+		where faq_user = #{faqUser} and faq_title like '%'||#{keyword}||'%'
+	</select>
+	
+	<select id="selectAllSearchFAQList" parameterType="HashMap" resultType="mainFaq">
+		select * from (select rownum as rNum, f.* from (
+			select
+				faq_no as faqNo,
+				user_id as userId,
+				faq_user as faqUser,
+				faq_title as faqTitle,
+				faq_contents as	faqContents,
+				faq_date as faqDate
+			from faq where faq_user = #{faqUser} 
+			and faq_title like '%'||#{keyword}||'%' order by 1 desc
+		)f)
+		where rNum between #{start} and #{end}
+	</select>
+</mapper>

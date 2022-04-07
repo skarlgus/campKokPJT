@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="adminChart">
+	<select id="getVisitUserCount" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM visit WHERE visit_date = #{_parameter}
+	</select>
+
+	<select id="getManNumber" resultType="_int">
+		SELECT count(*) FROM user_tbl WHERE user_gender = '남'
+	</select>
+
+	<select id="getWomanNumber" resultType="_int">
+		SELECT count(*) FROM user_tbl WHERE user_gender = '여'
+	</select>
+
+	<select id="getResMemberCount" parameterType="_int" resultType="_int">
+		SELECT count(*) FROM reservation WHERE
+		<choose>
+			<when test="_parameter lt 6">
+				res_member = #{_parameter}
+			</when>
+			<otherwise>
+				res_member <![CDATA[>=]]>
+				#{_parameter}
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="getReviewScoreCount" parameterType="_int" resultType="_int">
+		SELECT count(*) FROM review WHERE rev_star = #{_parameter}
+	</select>
+
+	<select id="getCeoCount" resultType="_int">
+		SELECT count(*) FROM user_tbl WHERE user_level = 1
+	</select>
+
+	<select id="getClientCount" resultType="_int">
+		SELECT count(*) FROM user_tbl WHERE user_level = 2
+	</select>
+</mapper>

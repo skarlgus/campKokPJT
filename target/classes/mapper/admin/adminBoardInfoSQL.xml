@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adminBoard">
+	<!-- ********** Board ********** -->
+	<select id="getTotalBoardInfoCount" resultType="_int">
+		SELECT count(*) FROM board
+	</select>
+
+	<select id="getTotalSearchBoardInfoCount" resultType="_int">
+		SELECT count(*) FROM board WHERE
+		<choose>
+			<when test="searchCategory.equals('boardTitle')">
+				board_title LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('boardContents')">
+				board_contents LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('userId')">
+				user_id LIKE '%'||#{search}||'%'
+			</when>
+		</choose>
+	</select>
+
+	<select id="selectBoardInfo" parameterType="_int" resultType="board">
+		SELECT
+		board_no AS boardNo,
+		user_id AS userId,
+		board_title AS boardTitle,
+		board_contents AS boardContents,
+		board_date AS boardDate,
+		board_filename AS boardFileName,
+		board_filepath AS boardFilePath
+		FROM board WHERE board_no =
+		#{_parameter}
+	</select>
+
+	<select id="selectBoardInfoList" parameterType="HashMap" resultType="board">
+		SELECT * FROM (SELECT ROWNUM AS rNum, b.* FROM (
+		SELECT
+		board_no AS boardNo,
+		user_id AS userId,
+		board_title AS boardTitle,
+		board_contents AS boardContents,
+		board_date AS boardDate,
+		board_filename AS boardFileName,
+		board_filepath
+		AS boardFilePath
+		FROM board ORDER BY 1 DESC
+		)b)
+		WHERE rNum BETWEEN #{start} AND #{end}
+	</select>
+
+	<select id="getSearchBoardInfoList" parameterType="HashMap" resultType="board">
+		SELECT * FROM (SELECT ROWNUM AS rNum, b.* FROM (
+		SELECT
+		board_no AS boardNo,
+		user_id AS userId,
+		board_title AS boardTitle,
+		board_contents AS
+		boardContents,
+		board_date AS boardDate,
+		board_filename AS boardFileName,
+		board_filepath AS boardFilePath
+		FROM board
+		WHERE
+		<choose>
+			<when test="searchCategory.equals('boardTitle')">
+				board_title LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('boardContents')">
+				board_contents LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('userId')">
+				user_id LIKE '%'||#{search}||'%'
+			</when>
+		</choose>
+		ORDER BY 1 DESC
+		)b)
+		WHERE rNum BETWEEN ${start} AND ${end}
+	</select>
+
+	<delete id="deleteBoardInfo" parameterType="_int">
+		DELETE FROM board WHERE board_no = #{_parameter}
+	</delete>
+
+	<!-- ********** FAQ ********** -->
+	<select id="getTotalFAQInfoCount" resultType="_int">
+		SELECT count(*) FROM faq
+	</select>
+
+	<select id="getTotalSearchFAQInfoCount" parameterType="HashMap" resultType="_int">
+		SELECT count(*) FROM faq WHERE
+		<choose>
+			<when test="searchCategory.equals('faqTitle')">
+				faq_title LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('faqContents')">
+				faq_contents LIKE '%'||#{search}||'%'
+			</when>
+		</choose>
+	</select>
+
+	<select id="selectFAQInfo" parameterType="_int" resultType="faq">
+		SELECT
+		faq_no AS faqNo,
+		user_id AS userId,
+		faq_user AS faqUser,
+		faq_title AS faqTitle,
+		faq_contents AS faqContents,
+		faq_date AS faqDate
+		FROM faq WHERE faq_no = #{_parameter}
+	</select>
+
+	<select id="selectFAQInfoList" parameterType="HashMap" resultType="faq">
+		SELECT * FROM (SELECT ROWNUM AS rNum, f.* FROM (
+		SELECT
+		faq_no AS faqNo,
+		user_id AS userId,
+		faq_user AS faqUser,
+		faq_title AS faqTitle,
+		faq_contents AS
+		faqContents,
+		faq_date AS faqDate
+		FROM faq ORDER BY 1 DESC
+		)f)
+		WHERE rNum
+		BETWEEN ${start} AND
+		${end}
+	</select>
+
+	<select id="selectSearchFAQInfoList" parameterType="HashMap" resultType="faq">
+		SELECT * FROM (SELECT ROWNUM AS rNum, f.* FROM (
+		SELECT
+		faq_no AS faqNo,
+		user_id AS userId,
+		faq_user AS faqUser,
+		faq_title AS faqTitle,
+		faq_contents AS
+		faqContents,
+		faq_date AS faqDate
+		FROM faq WHERE
+		<choose>
+			<when test="searchCategory.equals('faqTitle')">
+				faq_title LIKE '%'||#{search}||'%'
+			</when>
+			<when test="searchCategory.equals('faqContents')">
+				faq_contents LIKE '%'||#{search}||'%'
+			</when>
+		</choose>
+		ORDER BY 1 DESC
+		)f)
+		WHERE rNum
+		BETWEEN #{start} AND
+		#{end}
+	</select>
+
+	<insert id="insertFAQInfo" parameterType="faq">
+		INSERT INTO faq VALUES (
+		faq_seq.NEXTVAL,
+		#{userId},
+		#{faqUser},
+		#{faqTitle},
+		#{faqContents},
+		TO_CHAR(sysdate, 'yyyy-mm-dd')
+		)
+	</insert>
+
+	<update id="updateFAQInfo" parameterType="faq">
+		UPDATE faq SET faq_user = #{faqUser}, faq_title = #{faqTitle}, faq_contents = #{faqContents} WHERE
+		faq_no = #{faqNo}
+	</update>
+
+	<delete id="deleteFAQInfo" parameterType="_int">
+		DELETE FROM faq WHERE faq_no = #{_parameter}
+	</delete>
+</mapper>

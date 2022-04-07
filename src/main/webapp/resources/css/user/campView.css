@@ -1,0 +1,167 @@
+@charset "UTF-8";
+
+a{
+	color: #232323;
+	text-decoration: none;
+}
+a:hover{
+	color: #232323;
+}
+
+.camp-content {
+	display: flex;
+	justify-items: center;
+	flex-direction: column;
+	align-items: center;
+}
+
+/* 캠핑장 이름, 주소, 별점, 예약버튼 */
+.camp-title {
+	width: 1200px;
+	font-size: 30px;
+	margin: 10px;
+	margin-bottom: 20px;
+	font-weight: bold;
+	color: #405944;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.camp-title>div>p {
+	margin: 12px;
+}
+
+.camp-title>div>p:last-child {
+	font-size: 18px;
+	color: #232323;
+	font-weight: normal;
+}
+
+.camp-title>div>p:last-child>span {
+	color: #BF372B;
+}
+
+.camp-title>a {
+	display: block;
+	text-decoration: none;
+	color: #fff;
+	background-color: #405944;
+	width: 200px;
+	height: 65px;
+	text-align: center;
+	line-height: 65px;
+	font-size: 24px;
+	transition-duration: 0.3s;
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, .1), 0 0 2px rgba(0, 0, 0, .2);
+}
+
+.camp-title>a:hover {
+	background-color: #5A7356;
+}
+
+/* title */
+.hr-sect {
+	display: flex;
+	flex-basis: 100%;
+	align-items: center;
+	font-size: 18px;
+	font-weight: bold;
+	margin: 15px 0px;
+	margin-bottom: 30px;
+	padding-left: 300px;
+	padding-right: 300px;
+	color: #405944;
+}
+
+.hr-sect::before, .hr-sect::after {
+	content: "";
+	flex-grow: 1;
+	background: rgba(0, 0, 0, 0.35);
+	height: 1px;
+	font-size: 0px;
+	line-height: 0px;
+	margin: 0px 25px;
+}
+
+/* 캠핑장 내용 */
+.camp-naeyong {
+	padding: 30px;
+	width: 1140px;
+	display: flex;
+	flex-wrap: wrap;
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+
+.camp-tbl {
+	background-color: #fff;
+	width: 1140px;
+	border-top: 3px solid #405944;
+	border-collapse: collapse;
+}
+
+.camp-tbl-th-1 {
+	padding: 20px 30px;
+}
+
+.camp-tbl-th-2 {
+	width: 600px;
+}
+
+.camp-tbl>tbody>tr>th {
+	background-color: #fcfcfc;
+	text-align: center;
+}
+
+.camp-tbl>tbody>tr>td, th {
+	border-bottom: 1px solid #ccc;
+	padding: 10px;
+	padding: 15px 10px;
+}
+
+.camp-tbl>tbody>tr>td>a {
+	color: #232323;
+	text-decoration: none;
+}
+
+.camp-tbl>tbody>tr>td>a:hover {
+	font-weight: bold;
+}
+
+/* 리뷰, 공지 */
+.camp-re-no {
+	width: 1200px;
+	display: flex;
+	margin-bottom: 35px;
+	margin-top: 15px;
+}
+
+.camp-re-no>div {
+	border: 1px solid #ccc;
+	padding: 25px 40px 20px;
+	flex-grow: 1;
+}
+
+.camp-re-no>div:first-child {
+	margin-right: 15px;
+}
+
+.camp-re-no>div>p {
+	margin: 0;
+}
+
+.camp-re-no>div>ul{
+	list-style-type: circle;
+	padding-left: 23px;
+	padding-top: 12px;
+}
+
+
+
+
+
+
+
+
+

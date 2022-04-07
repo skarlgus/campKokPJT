@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+
+	<typeAliases>
+		<!-- Admin -->
+		<typeAlias type="com.campkok.admin.notice.model.vo.Notice" alias="notice" />
+		<typeAlias type="com.campkok.admin.notice.model.vo.CeoNotice" alias="ceoNotice" />
+		<typeAlias type="com.campkok.admin.notice.model.vo.ClientNotice" alias="clientNotice" />
+		<typeAlias type="com.campkok.admin.user.model.vo.User" alias="user" />
+		<typeAlias type="com.campkok.admin.visit.model.vo.Visit" alias="visit" />
+		<typeAlias type="com.campkok.admin.camp.model.vo.Camp" alias="camp" />
+		<typeAlias type="com.campkok.admin.camp.model.vo.CampEnv" alias="campEnv" />
+		<typeAlias type="com.campkok.admin.camp.model.vo.CampFile" alias="campFile" />
+		<typeAlias type="com.campkok.admin.board.model.vo.Board" alias="board" />
+		<typeAlias type="com.campkok.admin.board.model.vo.FAQ" alias="faq" />
+
+		<!-- Camp -->
+		<typeAlias type="com.campkok.camp.notice.model.vo.CampNoticeVO" alias="cn" />
+		<typeAlias type="com.campkok.camp.model.vo.CampVO" alias="c" />
+		<typeAlias type="com.campkok.camp.model.vo.CampEnv" alias="ce" />
+		<typeAlias type="com.campkok.camp.model.vo.Rent" alias="rent" />
+		<typeAlias type="com.campkok.camp.model.vo.FileTBL" alias="ft" />
+		<typeAlias type="com.campkok.camp.model.vo.CampRoomVO" alias="cr" />
+		<typeAlias type="com.campkok.camp.model.vo.UserVO" alias="cu" />
+		<typeAlias type="com.campkok.camp.model.vo.ReviewVO" alias="rvo" />
+		<typeAlias type="com.campkok.camp.model.vo.CampNoticeVO" alias="cnv" />
+		<typeAlias type="com.campkok.camp.model.vo.CampResVO" alias="campResVO" />
+		
+		<!-- Customer -->
+		<typeAlias type="com.campkok.customer.model.vo.UserVO" alias="u" />
+		<typeAlias type="com.campkok.customer.model.vo.ReservationVO" alias="r" />
+		<typeAlias type="com.campkok.customer.model.vo.ReviewVO" alias="rv" />
+		<typeAlias type="com.campkok.customer.model.vo.PointVO" alias="p" />
+		<typeAlias type="com.campkok.customer.model.vo.UserVO" alias="u" />
+		<typeAlias type="com.campkok.customer.model.vo.ReservationVO" alias="r" />
+		<typeAlias type="com.campkok.customer.model.vo.BoardVO" alias="b" />
+		<typeAlias type="com.campkok.customer.model.vo.BoardCommentVO" alias="bc" />
+		<typeAlias type="com.campkok.customer.model.vo.DmVO" alias="d" />
+
+		<typeAlias type="com.campkok.camplist.model.vo.CampList" alias="camplist" />
+		<typeAlias type="com.campkok.camplist.model.vo.CampRoomList" alias="campRoomList" />
+		<typeAlias type="com.campkok.faq.model.vo.FAQVO" alias="mainFaq" />
+
+	</typeAliases>
+</configuration>

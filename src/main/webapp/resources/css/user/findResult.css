@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+.login-content {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.login-box {
+	border-top: 3px solid #405944;
+	background-color: #fff;
+	width: 800px;
+	padding: 50px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 100px;
+}
+
+.login-box>p {
+	margin: 0;
+	font-size: 30px;
+	margin-bottom: 30px;
+	color: gray;
+}
+
+.login-box>a {
+	color: gray;
+}

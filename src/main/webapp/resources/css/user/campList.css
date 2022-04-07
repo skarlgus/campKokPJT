@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+.searchbar {
+	width: 100%;
+	margin-bottom: 50px;
+}
+
+.searchbar>form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.searchbar>form>select {
+    border: 1px solid lightgray;
+    border-right: none;
+    width: 130px;
+    height: 60px;
+    padding: 0;
+    padding-left: 25px;
+    outline: none;
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+
+.searchbar>form>input {
+	border: 1px solid lightgray;
+	border-right: none;
+	border-left: none;
+	width: 500px;
+	height: 60px;
+	padding: 0;
+	padding-left: 25px;
+	margin: 0;
+}
+
+.searchbar>form>input:first-child {
+	border-top-left-radius: 50px;
+	border-bottom-left-radius: 50px;
+}
+
+.searchbar>form>button {
+	background-color: #eba13d;
+	width: 150px;
+	height: 60px;
+	border: none;
+	font-size: 18px;
+	color: #fff;
+	border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+	transition-duration: 0.5s;
+}
+
+.searchbar>form>button:hover {
+	background-color: #F2542F;
+}
+
+.camp-content {
+	display: flex;
+	justify-items: center;
+	flex-direction: column;
+	align-items: center;
+}
+
+.page-title {
+	width: 1200px;
+	font-size: 30px;
+	margin: 30px;
+	margin-top: 60px;
+	font-weight: bold;
+	color: #405944;
+}
+
+.camp-naeyong {
+	width: 1200px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.camp-item {
+	padding-bottom: 25px;
+}
+
+.camp-item-img {
+	width: 280px;
+	height: 200px;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+}
+
+.camp-item-img>img {
+	height: 100%;
+}
+
+.camp-item>a {
+	text-decoration: none;
+	color: #232323;
+}
+
+.camp-item>a>ul {
+	padding: 0;
+	margin-top: 6px;
+}
+
+.camp-item>a>ul>li {
+	list-style: none;
+	font-size: 18px;
+	margin: 3px;
+}
+
+.camp-item>a>ul>li:last-child {
+	display: flex;
+	justify-content: space-between;
+}
+
+.camp-item>a>ul>li:last-child>p:first-child {
+	margin: 0;
+	display: inline-block;
+	padding-right: 10px;
+	color: #BF372B;
+	font-weight: bold;
+	font-size: 22px;
+}
+
+.camp-item>a>ul>li:last-child>p:last-child {
+	display: inline-block;
+	margin: 0;
+	padding-right: 10px;
+	color: #405944;
+	font-weight: bold;
+	text-align: right;
+	font-size: 22px;
+}
+
+.paging {
+	margin: 15px;
+	margin-bottom: 150px;
+}

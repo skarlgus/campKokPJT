@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+a:hover {
+	color: red;
+	text-decoration: underline;
+}
+
+h1, h3 {
+	margin-left: 20px;
+}
+
+hr {
+	margin-left: 20px;
+}
+
+textarea {
+	resize: none;
+	float: left;
+}
+
+.wrap {
+	margin: 0 auto;
+	width: 1200px;
+}
+
+.content-wrap>div {
+	margin-top: 10px;
+	float: left;
+}
+
+.content-navi {
+	width: 170px;
+	box-sizing: border-box;
+}
+
+.content-main {
+	width: 1030px;
+}
+
+.table-wrap {
+	margin: 10px 0 0 20px;
+}
+
+.camp-info, .camp-fac-info {
+	margin: 30px 0 0 20px;
+}
+
+.table {
+	table-layout: fixed;
+}
+
+.table>tbody>tr>th, .table>tbody>tr>td {
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.read-only {
+	border: none;
+	outline: none;
+	background-color: transparent;
+}
+
+.btn-list {
+	float: right;
+}
+
+.img-file {
+	width: 20px;
+	height: 20px;
+}
+
+#fileInfo {
+	margin-right: 25px;
+	float: left;
+}
+
+#pageNavi {
+	text-align: center;
+}

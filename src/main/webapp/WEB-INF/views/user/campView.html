@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>캠핑장</title>
+
+    <!-- bootstrap 4 -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .header-img {
+            width: 100%;
+            height: 250px;
+            background-image: url(/src/main/webapp/resources/img/member/3e35dcbb689fea33c2ed122a2b05c07f.jpg);
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+
+        .header-img>div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            height: 100%;
+        }
+
+        .header-img>div>p {
+            color: #fff;
+            margin: 0;
+            text-align: center;
+        }
+
+        .header-img>div>p:first-child {
+            color: #fff;
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .searchbar {
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        .searchbar>form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .searchbar>form>input {
+            border: 1px solid lightgray;
+            border-right: none;
+            width: 200px;
+            height: 60px;
+            padding: 0;
+            padding-left: 25px;
+            margin: 0;
+        }
+
+        .searchbar>form>input:first-child {
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+        }
+
+        .searchbar>form>button {
+            background-color: #eba13d;
+            width: 150px;
+            height: 60px;
+            border: none;
+            font-size: 18px;
+            color: #fff;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            transition-duration: 0.5s;
+        }
+
+        .searchbar>form>button:hover {
+            background-color: #F2542F;
+        }
+
+        .camp-content {
+            display: flex;
+            justify-items: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page-title {
+            width: 1200px;
+            font-size: 30px;
+            margin: 30px;
+            margin-top: 60px;
+            font-weight: bold;
+            color: #405944;
+        }
+
+        .camp-naeyong {
+            width: 1200px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .camp-item {
+            padding-bottom: 25px;
+        }
+
+        .camp-item-img {
+            width: 280px;
+            height: 200px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .camp-item-img>img {
+            height: 100%;
+        }
+
+        .camp-item>a {
+            text-decoration: none;
+            color: #232323;
+        }
+
+        .camp-item>a>ul {
+            padding: 0;
+            margin-top: 6px;
+        }
+
+        .camp-item>a>ul>li {
+            list-style: none;
+            font-size: 18px;
+            margin: 3px;
+        }
+
+        .camp-item>a>ul>li:last-child {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .camp-item>a>ul>li:last-child>p:first-child {
+            margin: 0;
+            display: inline-block;
+            padding-right: 10px;
+            color: #BF372B;
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        .camp-item>a>ul>li:last-child>p:last-child {
+            display: inline-block;
+            margin: 0;
+            padding-right: 10px;
+            color: #405944;
+            font-weight: bold;
+            text-align: right;
+            font-size: 22px;
+        }
+
+        .paging {
+            margin: 15px;
+            margin-bottom: 150px;
+        }
+
+
+        /* Make the image fully responsive */
+        .carousel-inner img {
+            width: 1200px;
+            height: 100%;
+        }
+
+        div {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+    <div class="header-img">
+        <div>
+            <p>캠핑장</p>
+            <p>전국 방방곡곡의 캠핑장을 한 곳에 모아보았습니다.<br>원하는 캠핑장을 찾아보세요.</p>
+        </div>
+    </div>
+    -->
+
+    <div id="demo" class="carousel slide" data-ride="carousel">
+
+        <!-- Indicators -->
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+            <li data-target="#demo" data-slide-to="2"></li>
+        </ul>
+
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/src/main/webapp/resources/img/main/best-free-camping-united-states-740x419.jpg" alt="Los Angeles" width="1100" height="500">
+            </div>
+            <div class="carousel-item">
+                <img src="/src/main/webapp/resources/img/main/best-free-camping-united-states-740x419.jpg" alt="Chicago" width="1100" height="500">
+            </div>
+            <div class="carousel-item">
+                <img src="/src/main/webapp/resources/img/main/best-free-camping-united-states-740x419.jpg" alt="New York" width="1100" height="500">
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+
+
+    <div class="camp-content">
+        <div class="page-title">
+            고양캠핑장
+            <div>★ 4.9 경기도 고양시 고양구</div>
+        </div>
+        <div class="camp-naeyong">
+            <div>
+                <div><a href="#">예약하기</a><a href="#">리뷰</a></div>
+                <div><a href="#">공지사항</a></div>
+                <div>캠핑장 정보</div>
+                <div>찾아오시는 길<br>지도 api</div>
+                <div>주변정보</div>
+            </div>
+        </div>
+
+    </div>
+</body></html>
