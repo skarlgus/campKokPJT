@@ -30,7 +30,7 @@
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
 
 #### etc
-<img src="https://img.shields.io/badge/kg이니시스결제api-21759B?style=for-the-badge&logoColor=white"> <img src="https://img.shields.io/badge/다음주소api-5C1F87?style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/kg이니시스결제api-21759B?style=for-the-badge&logoColor=white"> 
 
 ---  
 
